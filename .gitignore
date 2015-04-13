@@ -1,2 +1,6 @@
 AspNet5BatchingAngularJS/bower_components
 AspNet5BatchingAngularJS/node_modules
+.vs/AspNet5BatchingAngularJS/v14
+artifacts/bin/Damienbod.HttpBatching/Debug
+artifacts/obj/AspNet5BatchingAngularJS/Debug
+artifacts/obj
