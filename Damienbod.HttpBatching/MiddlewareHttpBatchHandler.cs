@@ -9,12 +9,6 @@ using System.Linq;
 
 namespace Damienbod.HttpBatching
 {
-    /// <summary>
-    /// Default implementation of <see cref="HttpBatchHandler"/> that encodes the HTTP request/response messages as MIME multipart.
-    /// </summary>
-    /// <remarks>
-    /// By default, it buffers the HTTP request messages in memory during parsing.
-    /// </remarks>
     public class MiddlewareHttpBatchHandler
     {
         private const string MultiPartContentSubtype = "mixed";
@@ -64,29 +58,7 @@ namespace Damienbod.HttpBatching
             }
 
 			return Task.FromResult(batchContent);
-			// TODO add headers
-			//HttpResponseMessage response = new HttpResponseMessage();
-			//         response.Content = batchContent;
-			//         return Task.FromResult(response);
-
-			//context.Response.ContentType = "multipart/batch";
-			//return context.Response.Content =(batchContent);
 		}
-
-
-		//	// TEST
-		//	//byte[] result;
-		//	//using (var stream = new MemoryStream())
-		//	//{
-		//	//	context.Request.Body.CopyTo(stream);
-		//	//	result = stream.ToArray();
-
-
-		//	//	// TODO: do something with the result
-		//	//}
-
-		//	//var str = System.Text.Encoding.Default.GetString(result);
-
 
 		public async Task<MultipartContent> ProcessBatchAsync(Microsoft.AspNet.Http.HttpContext context, CancellationToken cancellationToken)
 		{
@@ -179,6 +151,7 @@ namespace Damienbod.HttpBatching
 			{
 				cancellationToken.ThrowIfCancellationRequested();
 				HttpRequestMessage innerRequest = await httpContent.ReadAsHttpRequestMessageAsync();
+				// TODO these properties are important
 				//innerRequest.CopyBatchRequestProperties(context.Request);
 				requests.Add(innerRequest);
 			}
