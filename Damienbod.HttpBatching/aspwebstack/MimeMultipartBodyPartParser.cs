@@ -124,7 +124,7 @@ namespace Microsoft.Aspwebstack
             if (bytesRead == 0 && !_mimeParser.IsWaitingForEndOfMessage)
             {
                 CleanupCurrentBodyPart();
-                //throw new IOException(Properties.Resources.ReadAsMimeMultipartUnexpectedTermination);
+                throw new IOException("ReadAsMimeMultipartUnexpectedTermination");
             }
 
             // Make sure we remove an old array segments.
@@ -136,7 +136,7 @@ namespace Microsoft.Aspwebstack
                 if (_mimeStatus != MimeMultipartParser.State.BodyPartCompleted && _mimeStatus != MimeMultipartParser.State.NeedMoreData)
                 {
                     CleanupCurrentBodyPart();
-                   // throw Error.InvalidOperation(Properties.Resources.ReadAsMimeMultipartParseError, bytesConsumed, data);
+                    throw Error.InvalidOperation("ReadAsMimeMultipartParseError", bytesConsumed, data);
                 }
 
                 // First body is empty preamble which we just ignore
@@ -170,7 +170,7 @@ namespace Microsoft.Aspwebstack
                         else if (_bodyPartHeaderStatus != ParserState.NeedMoreData)
                         {
                             CleanupCurrentBodyPart();
-                           // throw Error.InvalidOperation(Properties.Resources.ReadAsMimeMultipartHeaderParseError, headerConsumed, part.Array);
+                           throw Error.InvalidOperation("ReadAsMimeMultipartHeaderParseError", headerConsumed, part.Array);
                         }
                     }
                     else
@@ -221,7 +221,7 @@ namespace Microsoft.Aspwebstack
             {
                 if (throwOnError)
                 {
-                    //throw Error.ArgumentMustBeGreaterThanOrEqualTo("maxMessageSize", maxMessageSize, MimeMultipartParser.MinMessageSize);
+                    throw Error.ArgumentMustBeGreaterThanOrEqualTo("maxMessageSize", maxMessageSize, MimeMultipartParser.MinMessageSize);
                 }
                 else
                 {
@@ -234,7 +234,7 @@ namespace Microsoft.Aspwebstack
             {
                 if (throwOnError)
                 {
-                    //throw Error.Argument("content", Properties.Resources.ReadAsMimeMultipartArgumentNoContentType, typeof(HttpContent).Name, "multipart/");
+                    throw Error.Argument("content", "ReadAsMimeMultipartArgumentNoContentType", typeof(HttpContent).Name, "multipart/");
                 }
                 else
                 {
@@ -246,7 +246,7 @@ namespace Microsoft.Aspwebstack
             {
                 if (throwOnError)
                 {
-                    //throw Error.Argument("content", Properties.Resources.ReadAsMimeMultipartArgumentNoMultipart, typeof(HttpContent).Name, "multipart/");
+                    throw Error.Argument("content", "ReadAsMimeMultipartArgumentNoMultipart", typeof(HttpContent).Name, "multipart/");
                 }
                 else
                 {
@@ -268,7 +268,7 @@ namespace Microsoft.Aspwebstack
             {
                 if (throwOnError)
                 {
-                    //throw Error.Argument("content", Properties.Resources.ReadAsMimeMultipartArgumentNoBoundary, typeof(HttpContent).Name, "multipart", "boundary");
+                    throw Error.Argument("content", "ReadAsMimeMultipartArgumentNoBoundary", typeof(HttpContent).Name, "multipart", "boundary");
                 }
                 else
                 {

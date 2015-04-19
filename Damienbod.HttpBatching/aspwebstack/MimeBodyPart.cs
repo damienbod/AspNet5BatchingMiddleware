@@ -114,17 +114,17 @@ namespace Microsoft.Aspwebstack
                 }
                 catch (Exception e)
                 {
-                    //throw Error.InvalidOperation(e, Properties.Resources.ReadAsMimeMultipartStreamProviderException, _streamProvider.GetType().Name);
+                    throw Error.InvalidOperation(e, "ReadAsMimeMultipartStreamProviderException", _streamProvider.GetType().Name);
                 }
 
                 if (_outputStream == null)
                 {
-                    //throw Error.InvalidOperation(Properties.Resources.ReadAsMimeMultipartStreamProviderNull, _streamProvider.GetType().Name, _streamType.Name);
+                    throw Error.InvalidOperation("ReadAsMimeMultipartStreamProviderNull", _streamProvider.GetType().Name, _streamType.Name);
                 }
 
                 if (!_outputStream.CanWrite)
                 {
-                   // throw Error.InvalidOperation(Properties.Resources.ReadAsMimeMultipartStreamProviderReadOnly, _streamProvider.GetType().Name, _streamType.Name);
+                   throw Error.InvalidOperation("ReadAsMimeMultipartStreamProviderReadOnly", _streamProvider.GetType().Name, _streamType.Name);
                 }
                 _content = new StreamContent(_outputStream);
             }

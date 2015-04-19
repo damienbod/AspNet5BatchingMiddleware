@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System;
 using Microsoft.Aspwebstack;
+using System.Linq;
 
 namespace Damienbod.HttpBatching
 {
@@ -52,8 +53,7 @@ namespace Damienbod.HttpBatching
             }
             if (request == null)
             {
-				// TODO
-                //throw Error.ArgumentNull("request");
+                throw Error.ArgumentNull("request");
             }
 
             MultipartContent batchContent = new MultipartContent(MultiPartContentSubtype);
@@ -69,8 +69,7 @@ namespace Damienbod.HttpBatching
             return Task.FromResult(response);
         }
 
-		//public async Task<HttpResponseMessage> ProcessBatchAsync(HttpContext context, CancellationToken cancellationToken)
-		//{
+
 		//	// TEST
 		//	//byte[] result;
 		//	//using (var stream = new MemoryStream())
@@ -84,25 +83,11 @@ namespace Damienbod.HttpBatching
 
 		//	//var str = System.Text.Encoding.Default.GetString(result);
 
-		//	IList<HttpRequestMessage> subRequests = new List<HttpRequestMessage>();
-  //          try
-		//	{
-		//		IList<HttpResponseMessage> responses = await ExecuteRequestMessagesAsync(subRequests, cancellationToken);
-		//		return await CreateResponseMessageAsync(responses, null, cancellationToken);
-		//	}
-		//	catch(Exception e)
-		//	{
-		//		string err = e.Message;
-		//	}
-
-		//	return null;
-  //      }
 
 		public async Task<HttpResponseMessage> ProcessBatchAsync(Microsoft.AspNet.Http.HttpContext context, CancellationToken cancellationToken)
 		{
 			if (context.Request == null)
 			{
-				// TODO
 				throw Error.ArgumentNull("request");
 			}
 
@@ -120,8 +105,8 @@ namespace Damienbod.HttpBatching
 			{
 				//foreach (HttpRequestMessage subRequest in subRequests)
 				//{
-				//    request.RegisterForDispose(subRequest.GetResourcesForDisposal());
-				//    request.RegisterForDispose(subRequest);
+				//	request.RegisterForDispose(subRequest.GetResourcesForDisposal());
+				//	request.RegisterForDispose(subRequest);
 				//}
 			}
 		}
@@ -130,42 +115,42 @@ namespace Damienbod.HttpBatching
         {
             if (requests == null)
             {
-				// TODO
-                //throw Error.ArgumentNull("requests");
+                throw Error.ArgumentNull("requests");
             }
 
             List<HttpResponseMessage> responses = new List<HttpResponseMessage>();
 
-			// TODO
-            //try
-            //{
-            //    switch (ExecutionOrder)
-            //    {
-            //        case BatchExecutionOrder.Sequential:
-            //            foreach (HttpRequestMessage request in requests)
-            //            {
-            //                responses.Add(await Invoker.SendAsync(request, cancellationToken));
-            //            }
-            //            break;
+			// TODO this should use the same handler without any network...
+			HttpClient httpClient = new HttpClient();
+			try
+			{
+				switch (ExecutionOrder)
+				{
+					case BatchExecutionOrder.Sequential:
+						foreach (HttpRequestMessage request in requests)
+						{
+							responses.Add(await httpClient.SendAsync(request, cancellationToken));
+						}
+						break;
 
-            //        case BatchExecutionOrder.NonSequential:
-            //            responses.AddRange(await Task.WhenAll(requests.Select(request => Invoker.SendAsync(request, cancellationToken))));
-            //            break;
-            //    }
-            //}
-            //catch
-            //{
-            //    foreach (HttpResponseMessage response in responses)
-            //    {
-            //        if (response != null)
-            //        {
-            //            response.Dispose();
-            //        }
-            //    }
-            //    throw;
-            //}
+					case BatchExecutionOrder.NonSequential:
+						responses.AddRange(await Task.WhenAll(requests.Select(request => httpClient.SendAsync(request, cancellationToken))));
+						break;
+				}
+			}
+			catch
+			{
+				foreach (HttpResponseMessage response in responses)
+				{
+					if (response != null)
+					{
+						response.Dispose();
+					}
+				}
+				throw;
+			}
 
-            return responses;
+			return responses;
         }
 
         public async Task<IList<HttpRequestMessage>> ParseBatchRequestsAsync(Microsoft.AspNet.Http.HttpContext context, CancellationToken cancellationToken)
@@ -189,45 +174,44 @@ namespace Damienbod.HttpBatching
 			MultipartStreamProvider streamProvider = await content.ReadAsMultipartAsync();
 			foreach (HttpContent httpContent in streamProvider.Contents)
 			{
-				
-				//cancellationToken.ThrowIfCancellationRequested();
-				//HttpRequestMessage innerRequest = await httpContent.ReadAsHttpRequestMessageAsync();
-				//innerRequest.CopyBatchRequestProperties(request);
-				//requests.Add(innerRequest);
+				cancellationToken.ThrowIfCancellationRequested();
+				HttpRequestMessage innerRequest = await httpContent.ReadAsHttpRequestMessageAsync();
+				//innerRequest.CopyBatchRequestProperties(context.Request);
+				requests.Add(innerRequest);
 			}
 			return requests;
         }
 
         public void ValidateRequest(HttpRequestMessage request)
         {
+            if (request == null)
+			{
+				throw Error.ArgumentNull("request");
+			}
+
 			// TODO
-            //if (request == null)
-            //{
-            //    throw Error.ArgumentNull("request");
-            //}
+			//if (request.Content == null)
+			//{
+			//	throw new HttpResponseException(request.CreateErrorResponse(
+			//		HttpStatusCode.BadRequest,
+			//		SRResources.BatchRequestMissingContent));
+			//}
 
-            //if (request.Content == null)
-            //{
-            //    throw new HttpResponseException(request.CreateErrorResponse(
-            //        HttpStatusCode.BadRequest,
-            //        SRResources.BatchRequestMissingContent));
-            //}
+			//MediaTypeHeaderValue contentType = request.Content.Headers.ContentType;
+			//if (contentType == null)
+			//{
+			//	throw new HttpResponseException(request.CreateErrorResponse(
+			//		HttpStatusCode.BadRequest,
+			//		SRResources.BatchContentTypeMissing));
+			//}
 
-            //MediaTypeHeaderValue contentType = request.Content.Headers.ContentType;
-            //if (contentType == null)
-            //{
-            //    throw new HttpResponseException(request.CreateErrorResponse(
-            //        HttpStatusCode.BadRequest,
-            //        SRResources.BatchContentTypeMissing));
-            //}
-
-            //if (!SupportedContentTypes.Contains(contentType.MediaType, StringComparer.OrdinalIgnoreCase))
-            //{
-            //    throw new HttpResponseException(request.CreateErrorResponse(
-            //        HttpStatusCode.BadRequest,
-            //        Error.Format(SRResources.BatchMediaTypeNotSupported, contentType.MediaType)));
-            //}
-        }
+			//if (!SupportedContentTypes.Contains(contentType.MediaType, StringComparer.OrdinalIgnoreCase))
+			//{
+			//	throw new HttpResponseException(request.CreateErrorResponse(
+			//		HttpStatusCode.BadRequest,
+			//		Error.Format(SRResources.BatchMediaTypeNotSupported, contentType.MediaType)));
+			//}
+		}
 
 	}
 }

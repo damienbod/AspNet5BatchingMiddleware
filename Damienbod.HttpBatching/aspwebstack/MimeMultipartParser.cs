@@ -42,22 +42,22 @@ namespace Microsoft.Aspwebstack
             // The minimum length which would be an empty message terminated by CRLF
             if (maxMessageSize < MimeMultipartParser.MinMessageSize)
             {
-                //throw Error.ArgumentMustBeGreaterThanOrEqualTo("maxMessageSize", maxMessageSize, MinMessageSize);
+                throw Error.ArgumentMustBeGreaterThanOrEqualTo("maxMessageSize", maxMessageSize, MinMessageSize);
             }
 
             if (String.IsNullOrWhiteSpace(boundary))
             {
-                //throw Error.ArgumentNull("boundary");
+                throw Error.ArgumentNull("boundary");
             }
 
             if (boundary.Length > MaxBoundarySize - 10)
             {
-                //throw Error.ArgumentMustBeLessThanOrEqualTo("boundary", boundary.Length, MaxBoundarySize - 10);
+                throw Error.ArgumentMustBeLessThanOrEqualTo("boundary", boundary.Length, MaxBoundarySize - 10);
             }
 
             if (boundary.EndsWith(" ", StringComparison.Ordinal))
             {
-                //throw Error.Argument("boundary", Properties.Resources.MimeMultipartParserBadBoundary);
+                throw Error.Argument("boundary", "MimeMultipartParserBadBoundary");
             }
 
             _maxMessageSize = maxMessageSize;
@@ -169,7 +169,7 @@ namespace Microsoft.Aspwebstack
         {
             if (buffer == null)
             {
-                //throw Error.ArgumentNull("buffer");
+                throw Error.ArgumentNull("buffer");
             }
 
             State parseStatus = State.NeedMoreData;
