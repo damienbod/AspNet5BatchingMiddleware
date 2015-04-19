@@ -12,10 +12,14 @@
 		"Microsoft.AspNet.Http.Core": "1.0.0-beta3",
 		"Microsoft.AspNet.Http.Interfaces": "1.0.0-beta3"
 	},
-
+    "commands": { 
+        "ConsoleAppHttpClient" : "run"
+    },
     "frameworks" : {
-        "aspnet50" : { 
+        "aspnet50" : { },
+        "aspnetcore50" : { 
             "dependencies": {
+                "System.Console": "4.0.0-beta-22523"
             }
         }
     }

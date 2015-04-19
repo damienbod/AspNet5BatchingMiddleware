@@ -6,8 +6,9 @@ using Microsoft.Owin.Builder;
 using Owin;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Http.Core;
+using System.Threading;
 
-namespace Microsoft.AspNet.Builder
+namespace Damienbod.HttpBatching
 {
 
 	public static class IApplicationBuilderExtensions
@@ -18,6 +19,9 @@ namespace Microsoft.AspNet.Builder
 			{
 				if (context.Request.Path.Value == "/api/$batch")
 				{
+					MiddlewareHttpBatchHandler batchHandler = new MiddlewareHttpBatchHandler();
+				    batchHandler.ProcessBatchAsync(context, CancellationToken.None);
+
 					context.Response.ContentType = "text/plain";
 					return context.Response.WriteAsync("Hello, world. template for /api/$batch");
 				};
