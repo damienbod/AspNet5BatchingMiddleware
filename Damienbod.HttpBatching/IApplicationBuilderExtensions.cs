@@ -7,6 +7,7 @@ using Owin;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Http.Core;
 using System.Threading;
+using System.Net.Http;
 
 namespace Damienbod.HttpBatching
 {
@@ -20,16 +21,33 @@ namespace Damienbod.HttpBatching
 				if (context.Request.Path.Value == "/api/$batch")
 				{
 					MiddlewareHttpBatchHandler batchHandler = new MiddlewareHttpBatchHandler();
-				    batchHandler.ProcessBatchAsync(context, CancellationToken.None);
 
-					context.Response.ContentType = "text/plain";
-					return context.Response.WriteAsync("Hello, world. template for /api/$batch");
+					var result = GetBatch(() => batchHandler.ProcessBatchAsync(context, CancellationToken.None));
+
+					context.Response.ContentType = "multipart/batch";
+                    return context.Response.WriteAsync(result.ReadAsStringAsync().Result);
 				};
 				return next.Invoke();
 			});
 		}
 
-		
+		public static MultipartContent GetBatch(Func<Task<MultipartContent>> method)
+		{
+			try
+			{
+				Task<MultipartContent> task = Task.Run(() => method.Invoke());
+				task.Wait();
+				return task.Result;
+			}
+			catch (AggregateException ae)
+			{
+				// TODO
+			}
+
+			return null;
+		}
+
+
 	}
 
 

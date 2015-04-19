@@ -45,7 +45,7 @@ namespace Damienbod.HttpBatching
 
         public IList<string> SupportedContentTypes { get; private set; }
 
-        public Task<HttpResponseMessage> CreateResponseMessageAsync(IList<HttpResponseMessage> responses, Microsoft.AspNet.Http.HttpContext context, CancellationToken cancellationToken)
+        public Task<MultipartContent> CreateResponseMessageAsync(IList<HttpResponseMessage> responses, Microsoft.AspNet.Http.HttpContext context, CancellationToken cancellationToken)
         {
             if (responses == null)
             {
@@ -63,11 +63,15 @@ namespace Damienbod.HttpBatching
                 batchContent.Add(batchResponse.Content);
             }
 
+			return Task.FromResult(batchContent);
 			// TODO add headers
-			HttpResponseMessage response = new HttpResponseMessage();
-            response.Content = batchContent;
-            return Task.FromResult(response);
-        }
+			//HttpResponseMessage response = new HttpResponseMessage();
+			//         response.Content = batchContent;
+			//         return Task.FromResult(response);
+
+			//context.Response.ContentType = "multipart/batch";
+			//return context.Response.Content =(batchContent);
+		}
 
 
 		//	// TEST
@@ -84,7 +88,7 @@ namespace Damienbod.HttpBatching
 		//	//var str = System.Text.Encoding.Default.GetString(result);
 
 
-		public async Task<HttpResponseMessage> ProcessBatchAsync(Microsoft.AspNet.Http.HttpContext context, CancellationToken cancellationToken)
+		public async Task<MultipartContent> ProcessBatchAsync(Microsoft.AspNet.Http.HttpContext context, CancellationToken cancellationToken)
 		{
 			if (context.Request == null)
 			{
