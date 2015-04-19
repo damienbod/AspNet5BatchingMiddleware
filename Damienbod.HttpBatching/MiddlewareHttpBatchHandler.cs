@@ -45,13 +45,13 @@ namespace Damienbod.HttpBatching
 
         public IList<string> SupportedContentTypes { get; private set; }
 
-        public Task<HttpResponseMessage> CreateResponseMessageAsync(IList<HttpResponseMessage> responses, HttpRequestMessage request, CancellationToken cancellationToken)
+        public Task<HttpResponseMessage> CreateResponseMessageAsync(IList<HttpResponseMessage> responses, Microsoft.AspNet.Http.HttpContext context, CancellationToken cancellationToken)
         {
             if (responses == null)
             {
                 throw Error.ArgumentNull("responses");
             }
-            if (request == null)
+            if (context.Request == null)
             {
                 throw Error.ArgumentNull("request");
             }
@@ -98,8 +98,7 @@ namespace Damienbod.HttpBatching
 			try
 			{
 				IList<HttpResponseMessage> responses = await ExecuteRequestMessagesAsync(subRequests, cancellationToken);
-				return null;
-				//return await CreateResponseMessageAsync(responses, context.Request, cancellationToken);
+				return await CreateResponseMessageAsync(responses, context, cancellationToken);
 			}
 			finally
 			{
