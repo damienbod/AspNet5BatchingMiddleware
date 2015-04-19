@@ -4,3 +4,5 @@ AspNet5BatchingAngularJS/node_modules
 artifacts/bin/Damienbod.HttpBatching/Debug
 artifacts/obj/AspNet5BatchingAngularJS/Debug
 artifacts/obj
+HttpBatchClientBradWilson/HttpBatchClient/bin
+HttpBatchClientBradWilson/HttpBatchClient/bin

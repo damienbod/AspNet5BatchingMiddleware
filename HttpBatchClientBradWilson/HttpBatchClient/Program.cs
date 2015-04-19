@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HttpBatchClient
 {
@@ -39,8 +35,6 @@ namespace HttpBatchClient
 					)
 				)
 			);
-
-		
 
 			using (Stream stdout = Console.OpenStandardOutput())
 			{

@@ -56,8 +56,7 @@ namespace Damienbod.HttpBatching
             {
                 batchContent.Add(batchResponse.Content);
             }
-
-			return Task.FromResult(batchContent);
+            return Task.FromResult(batchContent);
 		}
 
 		public async Task<MultipartContent> ProcessBatchAsync(Microsoft.AspNet.Http.HttpContext context, CancellationToken cancellationToken)
