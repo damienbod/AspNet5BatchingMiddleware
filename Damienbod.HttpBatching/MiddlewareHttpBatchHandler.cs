@@ -66,7 +66,7 @@ namespace Damienbod.HttpBatching
 				throw Error.ArgumentNull("request");
 			}
 
-			//ValidateRequest(context.Request);
+			ValidateRequest(context);
 
 			IList<HttpRequestMessage> subRequests = await ParseBatchRequestsAsync(context, cancellationToken);
 
@@ -77,6 +77,7 @@ namespace Damienbod.HttpBatching
 			}
 			finally
 			{
+				// TODO
 				//foreach (HttpRequestMessage subRequest in subRequests)
 				//{
 				//	request.RegisterForDispose(subRequest.GetResourcesForDisposal());
@@ -136,7 +137,7 @@ namespace Damienbod.HttpBatching
 
 			HttpContent content = new StreamContent(context.Request.Body);
 			string[] headersArray;
-			var valuecc = context.Request.Headers.TryGetValue("Content-Type", out headersArray);
+			var tryGetOk = context.Request.Headers.TryGetValue("Content-Type", out headersArray);
 
             content.Headers.Remove("Content-Type");
 			content.Headers.TryAddWithoutValidation("Content-Type", headersArray[0]);
@@ -150,36 +151,36 @@ namespace Damienbod.HttpBatching
 			{
 				cancellationToken.ThrowIfCancellationRequested();
 				HttpRequestMessage innerRequest = await httpContent.ReadAsHttpRequestMessageAsync();
+
 				// TODO these properties are important
-				//innerRequest.CopyBatchRequestProperties(context.Request);
+				HttpRequestMessage request = new HttpRequestMessage();
+				//request.Properties = context.Request
+				innerRequest.CopyBatchRequestProperties(request);
 				requests.Add(innerRequest);
 			}
 			return requests;
         }
 
-        public void ValidateRequest(HttpRequestMessage request)
+        public void ValidateRequest(Microsoft.AspNet.Http.HttpContext context)
         {
-            if (request == null)
+            if (context.Request == null)
 			{
 				throw Error.ArgumentNull("request");
 			}
 
+            if (context.Request.ContentLength  == null)
+			{
+				throw new HttpRequestException("BatchRequestMissingContent");
+			}
+
+			string[] headersArray;
+			var tryGetOk = context.Request.Headers.TryGetValue("Content-Type", out headersArray);
+			if (string.IsNullOrEmpty(headersArray[0]))
+			{
+				throw new HttpRequestException("BatchContentTypeMissing");
+			}
+
 			// TODO
-			//if (request.Content == null)
-			//{
-			//	throw new HttpResponseException(request.CreateErrorResponse(
-			//		HttpStatusCode.BadRequest,
-			//		SRResources.BatchRequestMissingContent));
-			//}
-
-			//MediaTypeHeaderValue contentType = request.Content.Headers.ContentType;
-			//if (contentType == null)
-			//{
-			//	throw new HttpResponseException(request.CreateErrorResponse(
-			//		HttpStatusCode.BadRequest,
-			//		SRResources.BatchContentTypeMissing));
-			//}
-
 			//if (!SupportedContentTypes.Contains(contentType.MediaType, StringComparer.OrdinalIgnoreCase))
 			//{
 			//	throw new HttpResponseException(request.CreateErrorResponse(

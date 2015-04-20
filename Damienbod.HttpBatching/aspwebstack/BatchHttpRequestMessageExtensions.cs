@@ -52,18 +52,18 @@ namespace Microsoft.Aspwebstack
                 }
             }
 
-			// TODO
-            //HttpRequestContext originalContext = subRequest.GetRequestContext();
 
-            //if (originalContext != null)
-            //{
-            //    BatchHttpRequestContext subRequestContext = new BatchHttpRequestContext(originalContext)
-            //    {
-            //        Url = new UrlHelper(subRequest)
-            //    };
+			//HttpRequestContext originalContext = subRequest.GetRequestContext();
 
-            //    subRequest.SetRequestContext(subRequestContext);
-            //}
-        }
+			//if (originalContext != null)
+			//{
+			//	BatchHttpRequestContext subRequestContext = new BatchHttpRequestContext(originalContext)
+			//	{
+			//		Url = new UrlHelper(subRequest)
+			//	};
+
+			//	subRequest.SetRequestContext(subRequestContext);
+			//}
+		}
     }
 }
