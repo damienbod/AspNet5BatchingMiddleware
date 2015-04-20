@@ -13,12 +13,13 @@ namespace Damienbod.HttpBatching
     {
         private const string MultiPartContentSubtype = "mixed";
         private const string MultiPartMixed = "multipart/mixed";
-        private BatchExecutionOrder _executionOrder;
+		private const string MultiPartBatch = "multipart/batch";
+		private BatchExecutionOrder _executionOrder;
 
         public MiddlewareHttpBatchHandler()
         {
             ExecutionOrder = BatchExecutionOrder.Sequential;
-            SupportedContentTypes = new List<string>() { MultiPartMixed };
+            SupportedContentTypes = new List<string>() { MultiPartMixed, MultiPartBatch };
         }
 
         public BatchExecutionOrder ExecutionOrder
@@ -179,14 +180,11 @@ namespace Damienbod.HttpBatching
 			{
 				throw new HttpRequestException("BatchContentTypeMissing");
 			}
-
-			// TODO
-			//if (!SupportedContentTypes.Contains(contentType.MediaType, StringComparer.OrdinalIgnoreCase))
-			//{
-			//	throw new HttpResponseException(request.CreateErrorResponse(
-			//		HttpStatusCode.BadRequest,
-			//		Error.Format(SRResources.BatchMediaTypeNotSupported, contentType.MediaType)));
-			//}
+			string[] ctypes = headersArray[0].Split(';');
+            if (!SupportedContentTypes.Contains(ctypes[0], StringComparer.OrdinalIgnoreCase))
+			{
+				throw new HttpRequestException("BatchMediaTypeNotSupported");
+			}
 		}
 
 	}

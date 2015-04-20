@@ -15,7 +15,7 @@ namespace HttpBatchClient
 				"http://localhost:52857/api/$batch"
 			);
 
-			var batchContent = new MultipartContent("batch");
+			var batchContent = new MultipartContent("mixed");
 			batchRequest.Content = batchContent;
 
 			batchContent.Add(

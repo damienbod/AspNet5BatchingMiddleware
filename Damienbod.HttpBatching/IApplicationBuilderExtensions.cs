@@ -22,6 +22,7 @@ namespace Damienbod.HttpBatching
 				{
 					MiddlewareHttpBatchHandler batchHandler = new MiddlewareHttpBatchHandler();
 
+					// TODO Haandle the exceptions correctly
 					var result = GetBatch(() => batchHandler.ProcessBatchAsync(context, CancellationToken.None));
 
 					context.Response.ContentType = "multipart/batch";
