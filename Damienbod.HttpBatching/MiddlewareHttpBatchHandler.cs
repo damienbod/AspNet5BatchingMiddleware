@@ -15,8 +15,9 @@ namespace Damienbod.HttpBatching
         private const string MultiPartMixed = "multipart/mixed";
 		private const string MultiPartBatch = "multipart/batch";
 		private BatchExecutionOrder _executionOrder;
+		//public HttpMessageInvoker Invoker { get; private set; }
 
-        public MiddlewareHttpBatchHandler()
+		public MiddlewareHttpBatchHandler()
         {
             ExecutionOrder = BatchExecutionOrder.Sequential;
             SupportedContentTypes = new List<string>() { MultiPartMixed, MultiPartBatch };
@@ -70,21 +71,8 @@ namespace Damienbod.HttpBatching
 			ValidateRequest(context);
 
 			IList<HttpRequestMessage> subRequests = await ParseBatchRequestsAsync(context, cancellationToken);
-
-			try
-			{
-				IList<HttpResponseMessage> responses = await ExecuteRequestMessagesAsync(subRequests, cancellationToken);
-				return await CreateResponseMessageAsync(responses, context, cancellationToken);
-			}
-			finally
-			{
-				// TODO
-				//foreach (HttpRequestMessage subRequest in subRequests)
-				//{
-				//	request.RegisterForDispose(subRequest.GetResourcesForDisposal());
-				//	request.RegisterForDispose(subRequest);
-				//}
-			}
+			IList<HttpResponseMessage> responses = await ExecuteRequestMessagesAsync(subRequests, cancellationToken);
+			return await CreateResponseMessageAsync(responses, context, cancellationToken);			
 		}
 
 		public async Task<IList<HttpResponseMessage>> ExecuteRequestMessagesAsync(IEnumerable<HttpRequestMessage> requests, CancellationToken cancellationToken)
@@ -96,6 +84,8 @@ namespace Damienbod.HttpBatching
 
             List<HttpResponseMessage> responses = new List<HttpResponseMessage>();
 
+			//HttpMessageInvoker //can be used...
+			
 			// TODO this should use the same handler without any network...
 			HttpClient httpClient = new HttpClient();
 			try
