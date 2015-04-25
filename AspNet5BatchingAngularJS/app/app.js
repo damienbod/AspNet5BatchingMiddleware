@@ -1,27 +1,40 @@
 ﻿(function () {
 	'use strict';
 
-	var app = angular.module('app', [
+	var app = angular.module('myapp', [
+		'ui.router',
 		'jcs.angular-http-batch'
-
 	]);
 
-	app.config(['httpBatchConfigProvider', function (httpBatchConfigProvider) {
-		httpBatchConfigProvider.setAllowedBatchEndpoint(
-				// root endpoint url
-				'http://localhost:52857',
+	app.config(["$stateProvider", "$urlRouterProvider",
+		function ($stateProvider, $urlRouterProvider) {
+			$urlRouterProvider.otherwise("/index");
+			$stateProvider.state("index", {
+				url: "/index", templateUrl: "/templates/home.html",
+				resolve: {
+					testClassOneService: "testClassOneService",
 
-				// endpoint batch address
-				'http://localhost:52857/api/$batch',
-
-				// optional configuration parameters
-				{
-					maxBatchedRequestPerCall: 20
-				});
-	}
+					testClassOne: ["testClassOneService", function (testClassOneService) {
+						return testClassOneService.getAll();
+					}]
+				}
+			});
+		}
 	]);
 
+	//app.config(['httpBatchConfigProvider', function (httpBatchConfigProvider) {
+	//	httpBatchConfigProvider.setAllowedBatchEndpoint(
+	//		// root endpoint url
+	//		'http://localhost:52857',
 
-	angular.module('myApp', ['jcs.angular-http-batch']);
+	//		// endpoint batch address
+	//		'http://localhost:52857/api/$batch',
+
+	//		// optional configuration parameters
+	//		{
+	//			maxBatchedRequestPerCall: 20
+	//		});
+	//	}
+	//]);
 
 })();
