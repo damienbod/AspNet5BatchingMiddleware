@@ -5,16 +5,16 @@
 
 		$log.info("TestClassOneService called");
 
-		var getAnigetAllmals = function () {
+		var getAll = function () {
 			$log.info("TestClassOneController getAll called");
-			return $http.get("/api/TestClassOneController")
+			return $http.get("/api/TestClassOne")
 			.then(function (response) {
 				return response.data;
 			});
 		}
 
 		return {
-			getAll: GetAll
+			getAll: getAll
 		}
 	}
 

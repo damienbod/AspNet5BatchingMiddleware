@@ -8,14 +8,14 @@
 
 	app.config(["$stateProvider", "$urlRouterProvider",
 		function ($stateProvider, $urlRouterProvider) {
-			$urlRouterProvider.otherwise("/index");
-			$stateProvider.state("index", {
-				url: "/index", templateUrl: "/templates/home.html",
+			$urlRouterProvider.otherwise("/home");
+			$stateProvider.state("home", {
+				url: "/home", templateUrl: "/templates/home.html",
 				resolve: {
-					testClassOneService: "testClassOneService",
+					TestClassOneService: "TestClassOneService",
 
-					testClassOne: ["testClassOneService", function (testClassOneService) {
-						return testClassOneService.getAll();
+					testClassOne: ["TestClassOneService", function (TestClassOneService) {
+						return TestClassOneService.getAll();
 					}]
 				}
 			});
