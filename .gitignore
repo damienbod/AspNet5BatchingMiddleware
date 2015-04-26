@@ -7,3 +7,8 @@ artifacts/obj
 HttpBatchClientBradWilson/HttpBatchClient/bin
 HttpBatchClientBradWilson/HttpBatchClient/bin
 HttpBatchClientBradWilson/HttpBatchClient/obj
+WebApiBatchService/packages
+WebApiBatchService/WebApiBatchService/bin
+WebApiBatchService/WebApiBatchService.v12.suo
+WebApiBatchService/WebApiBatchService/obj
+WebApiBatchService/WebApiBatchService/WebApiBatchService.csproj.user

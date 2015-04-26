@@ -7,7 +7,7 @@
 
 		var getAll = function () {
 			$log.info("TestClassOneController getAll called");
-			return $http.get("/api/TestClassOne")
+			return $http.get("http://localhost:13605/api/TestClassOne")
 			.then(function (response) {
 				return response.data;
 			});

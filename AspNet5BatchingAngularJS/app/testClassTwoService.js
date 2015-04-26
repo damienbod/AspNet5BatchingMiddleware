@@ -5,9 +5,9 @@
 
 		$log.info("TestClassTwoService called");
 
-		var gelAll = function () {
+		var getAll = function () {
 			$log.info("TestClassTwoController getAll called");
-			return $http.get("/api/TestClassTwo")
+			return $http.get("http://localhost:13605/api/TestClassTwo")
 			.then(function (response) {
 				return response.data;
 			});

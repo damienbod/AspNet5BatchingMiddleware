@@ -7,3 +7,4 @@
 /// <reference path="../app/testclasstwoservicey.js" />
 /// <reference path="lib/angular-ui-router/angular-ui-router.js" />
 /// <reference path="app.js" />
+/// <reference path="../app/homecontroller.js" />

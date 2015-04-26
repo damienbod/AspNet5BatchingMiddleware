@@ -1,4 +1,4 @@
-﻿namespace AspNet5BatchingAngularJS
+﻿namespace WebApiBatchService
 {
 	public class TestClassOne
 	{

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNet.Mvc;
 
-namespace AspNet5BatchingAngularJS.Controllers
+namespace WebApiBatchService.Controllers
 {
-	[Route("api/[controller]")]
-	public class TestClassTwoController : Controller
+	using System.Web.Http;
+
+	[RoutePrefix("api/testclasstwo")]
+	public class TestClassTwoController : ApiController
 	{
 		[HttpGet]
 		[Route("")]

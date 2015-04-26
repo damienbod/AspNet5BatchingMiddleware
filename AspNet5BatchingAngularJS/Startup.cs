@@ -31,15 +31,15 @@ namespace AspNet5BatchingAngularJS
         {
 			loggerfactory.AddConsole();
 
-			app.UseBatchOwinMiddleware();
+			//app.UseBatchOwinMiddleware();
 
-			app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action}/{id?}",
-                    defaults: new { controller = "Home", action = "Index" });
-			});
+			//app.UseMvc(routes =>
+   //         {
+   //             routes.MapRoute(
+   //                 name: "default",
+   //                 template: "{controller}/{action}/{id?}",
+   //                 defaults: new { controller = "Home", action = "Index" });
+			//});
         }
 	}
 }
