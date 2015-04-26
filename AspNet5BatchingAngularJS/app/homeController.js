@@ -8,21 +8,16 @@
 			'$scope',
 			'$http',
 			'$log',
+			'testClassOne',
+			'testClassTwo',
 			homeController
 		]
 	);
 
-	function homeController($scope, $http, $log) {
-		console.log('home called');
+	function homeController($scope, $http, $log, testClassOne, testClassTwo) {
+		$scope.testClassOne = testClassOne;
+		$scope.testClassTwo = testClassTwo;
+		console.log('home controller called');
 	}
-
-	//function DetailsController($scope, $log, fastestAnimal) {
-	//	$log.info("DetailsController called");
-	//	$scope.message = "Animal Details";
-
-	//	$scope.animal = fastestAnimal;
-
-	//}
-
 })();
 

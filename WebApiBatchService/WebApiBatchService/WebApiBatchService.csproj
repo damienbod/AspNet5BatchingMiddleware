@@ -107,6 +107,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestClassOne.cs" />
+    <Compile Include="TestClassTwo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

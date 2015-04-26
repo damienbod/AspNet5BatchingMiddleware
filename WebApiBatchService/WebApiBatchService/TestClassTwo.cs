@@ -1,8 +1,8 @@
 ﻿namespace WebApiBatchService
 {
-	public class TestClassOne
+	public class TestClassTwo
 	{
 		public long Id { get; set; }
-		public string Description { get; set; }
+		public string News { get; set; }
 	}
 }
