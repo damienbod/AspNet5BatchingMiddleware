@@ -16,16 +16,22 @@ namespace AspNet5BatchingAngularJS
             services.AddMvc();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerfactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-			//app.UseBatchOwinMiddleware();
+            loggerFactory.MinimumLevel = LogLevel.Information;
+            loggerFactory.AddConsole();
+            loggerFactory.AddDebug();
 
-			app.UseMvc(routes =>
+            app.UseIISPlatformHandler();
+
+            app.UseExceptionHandler("/Home/Error");
+
+            app.UseStaticFiles();
+            app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller}/{action}/{id?}",
-                    defaults: new { controller = "Home", action = "Index" });
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
 	}
