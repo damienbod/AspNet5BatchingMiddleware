@@ -17,6 +17,7 @@ namespace WebApiBatchService
                routeTemplate: "api/batch",
                batchHandler: new DefaultHttpBatchHandler(GlobalConfiguration.DefaultServer));
 
+            config.EnableCors();
             // Web API routes
             config.MapHttpAttributeRoutes();
 
